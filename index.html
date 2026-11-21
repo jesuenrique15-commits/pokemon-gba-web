@@ -2,35 +2,73 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
-  <title>Pokemon GBA</title>
-  <style>
-    body {
-      margin: 0;
-      background: #101827;
-    }
-    #game {
-      width: 100%;
-      height: 100vh;
-      min-height: 400px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport"
+ content="width=device-width, initial-scale=1">
+<title>Pokemon Team Rocket 2026</title>
+<style>
+  body {
+    margin: 0;
+    background: #151515;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  #inicio { padding: 35px 15px; }
+  button {
+    background: #c62828;
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  #game {
+    width: 100%;
+    height: 90vh;
+    min-height: 400px;
+  }
+</style>
 </head>
 <body>
-  <div id="game"></div>
+<div id="inicio">
+  <h2>POKEMON TEAM ROCKET 2026</h2>
+  <p>Selecciona tu archivo GBA</p>
+  <input id="rom" type="file" accept=".gba">
+  <p><button id="play">CARGAR JUEGO</button></p>
+</div>
 
-  <script>
-    EJS_player = "#game";
-    EJS_core = "gba";
-    EJS_gameName = "Pokemon GBA";
-    EJS_gameUrl = "roms/juego.gba";
-    EJS_pathtodata =
-      "https://cdn.emulatorjs.org/stable/data/";
-    EJS_startOnLoaded = false;
-  </script>
+<div id="game"></div>
 
-  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+<script>
+document.getElementById("play").onclick = () => {
+  const file = document.getElementById("rom").files[0];
+
+  if (!file) {
+    alert("Selecciona primero tu archivo .gba");
+    return;
+  }
+
+  if (!file.name.toLowerCase().endsWith(".gba")) {
+    alert("El archivo debe tener extension .gba");
+    return;
+  }
+
+  document.getElementById("inicio").style.display = "none";
+
+  window.EJS_player = "#game";
+  window.EJS_core = "gba";
+  window.EJS_gameName = "Pokemon Team Rocket 2026";
+  window.EJS_gameUrl = URL.createObjectURL(file);
+  window.EJS_pathtodata =
+    "https://cdn.emulatorjs.org/stable/data/";
+  window.EJS_startOnLoaded = false;
+
+  const script = document.createElement("script");
+  script.src =
+    "https://cdn.emulatorjs.org/stable/data/loader.js";
+  document.body.appendChild(script);
+};
+</script>
 </body>
 </html>
