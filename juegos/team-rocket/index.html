@@ -1,54 +1,224 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pokémon Team Rocket 2026</title>
+
 <style>
-  body {
-    margin: 0;
-    background: #151515;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  #inicio { padding: 35px 15px; }
-  button {
-    background: #c62828;
-    color: white;
-    border: none;
-    padding: 14px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  #game {
-    width: 100%;
-    height: 90vh;
-    min-height: 400px;
-  }
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #101014;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+.container {
+  width: 100%;
+  max-width: 1050px;
+  margin: auto;
+  padding: 20px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #b91c1c;
+  padding-bottom: 20px;
+  gap: 15px;
+}
+.tag {
+  color: #f87171;
+  letter-spacing: 3px;
+  font-size: 12px;
+}
+h1 {
+  font-size: clamp(25px, 5vw, 45px);
+  margin: 8px 0;
+}
+.subtitle {
+  color: #999;
+}
+.logo {
+  background: #b91c1c;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-size: 45px;
+  font-weight: bold;
+  box-shadow: 0 0 25px #b91c1c66;
+}
+.panel {
+  background: #1b1b22;
+  margin-top: 25px;
+  padding: 25px;
+  border: 1px solid #373740;
+  border-radius: 15px;
+  text-align: center;
+}
+.hero {
+  background:
+    radial-gradient(circle, #581515, #0b0b0f 70%);
+  border: 1px solid #7f1d1d;
+  padding: 45px 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+.hero .big-r {
+  color: #ed3333;
+  font-size: 100px;
+  font-weight: 900;
+  text-shadow: 0 0 35px #b91c1c;
+}
+.hero h2 {
+  margin-bottom: 5px;
+}
+.hero p {
+  color: #bbb;
+}
+.file-label {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #33333d;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.file-label:hover {
+  background: #44444e;
+}
+#rom {
+  display: none;
+}
+#filename {
+  color: #bbb;
+  font-size: 13px;
+  margin: 14px 0;
+  overflow-wrap: anywhere;
+}
+button {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  margin: 15px auto;
+  padding: 16px;
+  border: none;
+  border-radius: 9px;
+  background: #b91c1c;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover {
+  background: #dc2626;
+}
+button:disabled {
+  background: #633333;
+  cursor: not-allowed;
+}
+#game {
+  width: 100%;
+  height: 75vh;
+  min-height: 430px;
+  display: none;
+}
+.info {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: #999;
+  font-size: 13px;
+  padding: 20px 0;
+}
+footer {
+  text-align: center;
+  color: #777;
+  font-size: 12px;
+  padding: 15px;
+}
+@media(max-width:600px) {
+  .container { padding: 12px; }
+  .panel { padding: 12px; }
+  .logo { font-size: 28px; padding: 12px; }
+  .hero { padding: 20px 10px; }
+  #game { min-height: 350px; }
+}
 </style>
 </head>
+
 <body>
-<div id="inicio">
-  <h2>POKÉMON TEAM ROCKET 2026</h2>
-  <p>Selecciona tu archivo GBA</p>
-  <input id="rom" type="file" accept=".gba">
-  <p><button id="play">CARGAR JUEGO</button></p>
+<div class="container">
+
+<header>
+  <div>
+    <div class="tag">ROCKET GAME DIVISION</div>
+    <h1>TEAM ROCKET</h1>
+    <div class="subtitle">POKÉMON EDICIÓN 2026</div>
+  </div>
+  <div class="logo">R</div>
+</header>
+
+<div class="panel" id="inicio">
+  <div class="hero">
+    <div class="big-r">R</div>
+    <h2>BIENVENIDO AL TEAM ROCKET</h2>
+    <p>Prepárate para comenzar tu misión.</p>
+  </div>
+
+  <label class="file-label" for="rom">
+    SELECCIONAR ARCHIVO GBA
+  </label>
+
+  <input type="file" id="rom" accept=".gba">
+
+  <p id="filename">Ningún archivo seleccionado</p>
+
+  <button id="play" disabled>
+    ▶ INICIAR MISIÓN
+  </button>
 </div>
 
 <div id="game"></div>
 
-<script>
-document.getElementById("play").onclick = () => {
-  const file = document.getElementById("rom").files[0];
+<div class="info">
+  <span>🎮 GAME BOY ADVANCE</span>
+  <span>⛶ PANTALLA COMPLETA</span>
+  <span>💾 GUARDADO</span>
+</div>
 
-  if (!file || !file.name.toLowerCase().endsWith(".gba")) {
-    alert("Selecciona un archivo .gba");
-    return;
-  }
+<footer>
+  ROCKET GAME DIVISION · 2026
+</footer>
+
+</div>
+
+<script>
+const rom = document.getElementById("rom");
+const play = document.getElementById("play");
+const filename = document.getElementById("filename");
+
+rom.addEventListener("change", () => {
+  const file = rom.files[0];
+  const valid = file &&
+    file.name.toLowerCase().endsWith(".gba");
+
+  play.disabled = !valid;
+  filename.textContent = valid
+    ? file.name
+    : "Selecciona un archivo .gba válido";
+});
+
+play.addEventListener("click", () => {
+  const file = rom.files[0];
+  if (!file || play.disabled) return;
+
+  play.disabled = true;
 
   document.getElementById("inicio").style.display = "none";
+  document.getElementById("game").style.display = "block";
 
   window.EJS_player = "#game";
   window.EJS_core = "gba";
@@ -61,8 +231,16 @@ document.getElementById("play").onclick = () => {
   const script = document.createElement("script");
   script.src =
     "https://cdn.emulatorjs.org/stable/data/loader.js";
+
+  script.onerror = () => {
+    alert("No se pudo cargar EmulatorJS.");
+    document.getElementById("game").style.display = "none";
+    document.getElementById("inicio").style.display = "block";
+    play.disabled = false;
+  };
+
   document.body.appendChild(script);
-};
+});
 </script>
 </body>
 </html>
