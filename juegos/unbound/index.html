@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pokémon Unbound | GBA Online</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0b1023;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 1050px;
+  margin: auto;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 2px solid #7957e8;
+  padding-bottom: 20px;
+}
+
+.tag {
+  color: #b8acff;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+h1 {
+  font-size: clamp(26px, 5vw, 45px);
+  margin: 8px 0;
+  color: #fff;
+}
+
+.subtitle {
+  color: #b9b8d5;
+}
+
+.logo {
+  background: linear-gradient(135deg, #4338ca, #9333ea);
+  border-radius: 15px;
+  padding: 20px;
+  font-size: 40px;
+  font-weight: bold;
+  box-shadow: 0 0 30px #7957e866;
+}
+
+.panel {
+  background: #151b3d;
+  margin-top: 25px;
+  padding: 25px;
+  border: 1px solid #5551b4;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.hero {
+  background: radial-gradient(
+    circle, #39246e, #101630 75%
+  );
+  border: 1px solid #6545c4;
+  padding: 45px 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.symbol {
+  font-size: 75px;
+  color: #c4b5fd;
+  text-shadow: 0 0 35px #a78bfa;
+}
+
+.hero h2 {
+  margin: 10px 0;
+}
+
+.hero p {
+  color: #c4b5fd;
+}
+
+.file-label {
+  display: inline-block;
+  padding: 13px 22px;
+  background: #373164;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.file-label:hover {
+  background: #51449a;
+}
+
+#rom {
+  display: none;
+}
+
+#filename {
+  color: #b9b8d5;
+  font-size: 13px;
+  margin: 15px 0;
+  overflow-wrap: anywhere;
+}
+
+button {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  margin: 15px auto;
+  padding: 16px;
+  border: none;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #4338ca, #9333ea);
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(1.2);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#game {
+  display: none;
+  width: 100%;
+  height: 75vh;
+  min-height: 430px;
+  margin-top: 20px;
+  background: #080d1d;
+  border: 2px solid #7957e8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#game.active {
+  display: block;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  color: #b9b8d5;
+  font-size: 13px;
+  padding: 20px 0;
+}
+
+footer {
+  text-align: center;
+  color: #8584a7;
+  font-size: 12px;
+  padding: 15px;
+}
+
+@media(max-width:600px) {
+  .container { padding: 12px; }
+  .panel { padding: 12px; }
+  .hero { padding: 25px 10px; }
+  .logo { font-size: 26px; padding: 12px; }
+  #game { height: 70vh; min-height: 350px; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div>
+    <div class="tag">BORRIUS REGION · GBA</div>
+    <h1>POKÉMON UNBOUND</h1>
+    <div class="subtitle">
+      Una nueva aventura te espera
+    </div>
+  </div>
+  <div class="logo">✦</div>
+</header>
+
+<div class="panel" id="inicio">
+  <div class="hero">
+    <div class="symbol">✦</div>
+    <h2>EL DESTINO DE BORRIUS</h2>
+    <p>
+      Prepárate para explorar un mundo lleno
+      de misterios y desafíos.
+    </p>
+  </div>
+
+  <label class="file-label" for="rom">
+    SELECCIONAR ARCHIVO GBA
+  </label>
+
+  <input type="file" id="rom" accept=".gba">
+
+  <p id="filename">Ningún archivo seleccionado</p>
+
+  <button id="play" disabled>
+    ▶ COMENZAR AVENTURA
+  </button>
+</div>
+
+<div id="game"></div>
+
+<div class="info">
+  <span>🎮 GAME BOY ADVANCE</span>
+  <span>⛶ PANTALLA COMPLETA</span>
+  <span>💾 GUARDADO</span>
+</div>
+
+<footer>
+  UNBOUND GAME PORTAL · 2026
+</footer>
+
+</div>
+
+<script>
+const rom = document.getElementById("rom");
+const play = document.getElementById("play");
+const filename = document.getElementById("filename");
+const inicio = document.getElementById("inicio");
+const game = document.getElementById("game");
+
+rom.addEventListener("change", () => {
+  const file = rom.files[0];
+
+  const valid = Boolean(
+    file && file.name.toLowerCase().endsWith(".gba")
+  );
+
+  play.disabled = !valid;
+
+  filename.textContent = valid
+    ? file.name
+    : "Selecciona un archivo .gba válido";
+});
+
+play.addEventListener("click", () => {
+  const file = rom.files[0];
+
+  if (!file || play.disabled) return;
+
+  play.disabled = true;
+  game.classList.add("active");
+
+  window.EJS_player = "#game";
+  window.EJS_core = "gba";
+  window.EJS_gameName = "Pokemon Unbound";
+  window.EJS_gameUrl = URL.createObjectURL(file);
+  window.EJS_pathtodata =
+    "https://cdn.emulatorjs.org/stable/data/";
+  window.EJS_startOnLoaded = false;
+
+  const script = document.createElement("script");
+  script.src =
+    "https://cdn.emulatorjs.org/stable/data/loader.js";
+
+  script.onerror = () => {
+    alert("No se pudo cargar EmulatorJS.");
+    game.classList.remove("active");
+    inicio.style.display = "block";
+    play.disabled = false;
+  };
+
+  inicio.style.display = "none";
+  document.body.appendChild(script);
+});
+</script>
+
+</body>
+</html>
