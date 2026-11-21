@@ -14,7 +14,7 @@
 body {
   margin: 0;
   background: #0b1023;
-  color: white;
+  color: #fff;
   font-family: Arial, sans-serif;
 }
 
@@ -23,6 +23,8 @@ body {
   margin: auto;
   padding: 20px;
 }
+
+/* ENCABEZADO */
 
 header {
   display: flex;
@@ -42,7 +44,6 @@ header {
 h1 {
   font-size: clamp(26px, 5vw, 45px);
   margin: 8px 0;
-  color: #fff;
 }
 
 .subtitle {
@@ -58,6 +59,8 @@ h1 {
   box-shadow: 0 0 30px #7957e866;
 }
 
+/* PANEL PRINCIPAL */
+
 .panel {
   background: #151b3d;
   margin-top: 25px;
@@ -72,24 +75,49 @@ h1 {
     circle, #39246e, #101630 75%
   );
   border: 1px solid #6545c4;
-  padding: 45px 15px;
+  padding: 35px 15px;
   border-radius: 12px;
   margin-bottom: 20px;
 }
 
-.symbol {
-  font-size: 75px;
-  color: #c4b5fd;
-  text-shadow: 0 0 35px #a78bfa;
-}
-
 .hero h2 {
   margin: 10px 0;
+  font-size: clamp(20px, 4vw, 28px);
 }
 
 .hero p {
   color: #c4b5fd;
+  line-height: 1.6;
 }
+
+/* HOOPA DESATADO */
+
+.hoopa-img {
+  display: block;
+  width: 100%;
+  max-width: 330px;
+  height: auto;
+  margin: 0 auto 20px;
+  object-fit: contain;
+
+  filter: drop-shadow(
+    0 0 25px #9333ea88
+  );
+
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* SELECCIONAR ROM */
 
 .file-label {
   display: inline-block;
@@ -115,6 +143,8 @@ h1 {
   overflow-wrap: anywhere;
 }
 
+/* BOTÓN DE INICIO */
+
 button {
   display: block;
   width: 100%;
@@ -123,21 +153,28 @@ button {
   padding: 16px;
   border: none;
   border-radius: 9px;
-  background: linear-gradient(135deg, #4338ca, #9333ea);
+  background: linear-gradient(
+    135deg, #4338ca, #9333ea
+  );
   color: white;
   font-size: 17px;
   font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 0 20px #7957e844;
+  transition: transform 0.2s, filter 0.2s;
 }
 
 button:hover:not(:disabled) {
   filter: brightness(1.2);
+  transform: scale(1.03);
 }
 
 button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* EMULADOR GBA */
 
 #game {
   display: none;
@@ -154,6 +191,8 @@ button:disabled {
 #game.active {
   display: block;
 }
+
+/* INFORMACIÓN */
 
 .info {
   display: flex;
@@ -172,78 +211,136 @@ footer {
   padding: 15px;
 }
 
-@media(max-width:600px) {
-  .container { padding: 12px; }
-  .panel { padding: 12px; }
-  .hero { padding: 25px 10px; }
-  .logo { font-size: 26px; padding: 12px; }
-  #game { height: 70vh; min-height: 350px; }
+/* MÓVILES */
+
+@media (max-width: 600px) {
+  .container {
+    padding: 12px;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+
+  .hero {
+    padding: 25px 10px;
+  }
+
+  .logo {
+    font-size: 26px;
+    padding: 12px;
+  }
+
+  .hoopa-img {
+    max-width: 240px;
+  }
+
+  #game {
+    height: 70vh;
+    min-height: 350px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hoopa-img {
+    animation: none;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
-<header>
-  <div>
-    <div class="tag">BORRIUS REGION · GBA</div>
-    <h1>POKÉMON UNBOUND</h1>
-    <div class="subtitle">
-      Una nueva aventura te espera
+  <!-- ENCABEZADO -->
+
+  <header>
+    <div>
+      <div class="tag">BORRIUS REGION · GBA</div>
+      <h1>POKÉMON UNBOUND</h1>
+      <div class="subtitle">
+        Una nueva aventura te espera
+      </div>
     </div>
-  </div>
-  <div class="logo">✦</div>
-</header>
 
-<div class="hero">
-  <img
-    src="img/hoopa.png"
-    alt="Hoopa Desatado"
-    class="hoopa-img"
-  >
-  <h2>EL DESTINO DE BORRIUS</h2>
-    <p>
-      Prepárate para explorar un mundo lleno
-      de misterios y desafíos.
+    <div class="logo">✦</div>
+  </header>
+
+  <!-- PANTALLA DE INICIO -->
+
+  <div class="panel" id="inicio">
+
+    <div class="hero">
+
+      <img
+        src="img/Hoopa.PNG"
+        alt="Hoopa Desatado"
+        class="hoopa-img"
+      >
+
+      <h2>EL DESTINO DE BORRIUS</h2>
+
+      <p>
+        Prepárate para explorar un mundo
+        lleno de misterios, desafíos
+        y aventuras Pokémon.
+      </p>
+
+    </div>
+
+    <label class="file-label" for="rom">
+      SELECCIONAR ARCHIVO GBA
+    </label>
+
+    <input
+      type="file"
+      id="rom"
+      accept=".gba"
+    >
+
+    <p id="filename">
+      Ningún archivo seleccionado
     </p>
+
+    <button id="play" disabled>
+      ▶ COMENZAR AVENTURA
+    </button>
+
   </div>
 
-  <label class="file-label" for="rom">
-    SELECCIONAR ARCHIVO GBA
-  </label>
+  <!-- EMULADOR -->
 
-  <input type="file" id="rom" accept=".gba">
+  <div id="game"></div>
 
-  <p id="filename">Ningún archivo seleccionado</p>
+  <!-- INFORMACIÓN -->
 
-  <button id="play" disabled>
-    ▶ COMENZAR AVENTURA
-  </button>
-</div>
+  <div class="info">
+    <span>🎮 GAME BOY ADVANCE</span>
+    <span>⛶ PANTALLA COMPLETA</span>
+    <span>💾 GUARDADO</span>
+  </div>
 
-<div id="game"></div>
-
-<div class="info">
-  <span>🎮 GAME BOY ADVANCE</span>
-  <span>⛶ PANTALLA COMPLETA</span>
-  <span>💾 GUARDADO</span>
-</div>
-
-<footer>
-  UNBOUND GAME PORTAL · 2026
-</footer>
+  <footer>
+    UNBOUND GAME PORTAL · 2026
+  </footer>
 
 </div>
 
 <script>
+
+/* ELEMENTOS */
+
 const rom = document.getElementById("rom");
 const play = document.getElementById("play");
 const filename = document.getElementById("filename");
 const inicio = document.getElementById("inicio");
 const game = document.getElementById("game");
 
+/* SELECCIONAR JUEGO */
+
 rom.addEventListener("change", () => {
+
   const file = rom.files[0];
 
   const valid = Boolean(
@@ -255,16 +352,25 @@ rom.addEventListener("change", () => {
   filename.textContent = valid
     ? file.name
     : "Selecciona un archivo .gba válido";
+
 });
 
+/* INICIAR EMULADOR */
+
 play.addEventListener("click", () => {
+
   const file = rom.files[0];
 
-  if (!file || play.disabled) return;
+  if (!file || play.disabled) {
+    return;
+  }
 
   play.disabled = true;
+
+  // Mostrar emulador
   game.classList.add("active");
 
+  // Configuración EmulatorJS
   window.EJS_player = "#game";
   window.EJS_core = "gba";
   window.EJS_gameName = "Pokemon Unbound";
@@ -273,20 +379,32 @@ play.addEventListener("click", () => {
     "https://cdn.emulatorjs.org/stable/data/";
   window.EJS_startOnLoaded = false;
 
+  // Crear script
   const script = document.createElement("script");
+
   script.src =
     "https://cdn.emulatorjs.org/stable/data/loader.js";
 
+  script.onload = () => {
+    console.log("EmulatorJS cargado correctamente");
+  };
+
   script.onerror = () => {
     alert("No se pudo cargar EmulatorJS.");
+
     game.classList.remove("active");
     inicio.style.display = "block";
     play.disabled = false;
   };
 
+  // Ocultar pantalla inicial
   inicio.style.display = "none";
+
+  // Cargar emulador
   document.body.appendChild(script);
+
 });
+
 </script>
 
 </body>
